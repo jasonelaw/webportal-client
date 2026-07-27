@@ -1,0 +1,19 @@
+[project]
+name = "webportal-client"
+version = "0.1.0"
+description = "Synchronous and asynchronous Python clients for the AQUARIUS WebPortal API."
+readme = "README.md"
+authors = [
+    { name = "Jason Law", email = "jason.law@portlandoregon.gov" }
+]
+license = "MIT"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.26.0",
+    "httpx>=0.23.0",
+    "sphinx>=7.4.7",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.0,<0.12"]
+build-backend = "uv_build"
