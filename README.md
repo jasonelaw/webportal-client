@@ -7,6 +7,7 @@ This package provides both synchronous and asynchronous Python clients for the A
 Using pyproject.toml:
 
     git clone https://github.com/jasonelaw/webportal-client.git
+    cd webportal-client
     pip install .
 
 If you want to convert the returned values to Polars or Pandas (not implemented yet) data frames, try:
