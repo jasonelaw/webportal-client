@@ -19,7 +19,7 @@ class WebPortalClient:
 
     def __init__(
         self,
-        base_url: str,
+        base_url: Optional[str] = None,
         username: Optional[str] = None,
         password: Optional[str] = None,
         timeout: int = 30,
@@ -33,6 +33,11 @@ class WebPortalClient:
         timeout: request timeout in seconds
         verify_ssl: SSL certificate verification
         """
+        base_url = base_url or os.getenv("AQUARIUS_WEBPORTAL_URL")
+        if not base_url:
+            raise ValueError(
+                "WebPortal API base url must be provided or set as AQUARIUS_WEBPORTAL_URL environment key"
+            )
 
         self.base_url = base_url.rstrip("/")
         self.username = username

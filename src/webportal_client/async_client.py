@@ -19,13 +19,17 @@ class WebPortalAsyncClient:
 
     def __init__(
         self,
-        base_url: str,
+        base_url: Optional[str] = None,
         username: Optional[str] = None,
         password: Optional[str] = None,
         timeout: int = 30,
         verify_ssl: bool = True,
     ):
-        self.base_url = base_url.rstrip("/")
+        base_url = base_url or os.getenv("AQUARIUS_WEBPORTAL_URL")
+        if not base_url:
+            raise ValueError(
+                "WebPortal API base url must be provided or set as AQUARIUS_WEBPORTAL_URL environment key"
+            )
         self.username = username
         self.password = password
         self.timeout = timeout
@@ -60,10 +64,16 @@ class WebPortalAsyncClient:
         """
         Enable Basic Auth for subsequent async requests.
         """
-        if not username:
-            username = os.environ["AQUARIUS_WEBPORTAL_USER"]
-        if not password:
-            password = os.environ["Aquarius_WEBPORTAL_PW"]
+        self.username = username or os.getenv("AQUARIUS_WEBPORTAL_USER")
+        self.password = password or os.getenv("AQUARIUS_WEBPORTAL_PW")
+
+        if not self.username or not self.password:
+            raise ValueError(
+                (
+                    "WebPortal username and password must be provided "
+                    "or set as AQUARIUS_WEBPORTAL_USER and AQUARIUS_WEBPORTAL_PW environment keys"
+                )
+            )
 
         self.basic_auth = (self.username, self.password)
 
@@ -79,10 +89,16 @@ class WebPortalAsyncClient:
         """
         url = self._build_url(f"/auth/{provider}")
 
-        if not username:
-            username = os.environ["AQUARIUS_WEBPORTAL_USER"]
-        if not password:
-            password = os.environ["Aquarius_WEBPORTAL_PW"]
+        username = username or os.getenv("AQUARIUS_WEBPORTAL_USER")
+        password = password or os.getenv("AQUARIUS_WEBPORTAL_PW")
+
+        if not username or not password:
+            raise ValueError(
+                (
+                    "WebPortal username and password must be provided "
+                    "or set as AQUARIUS_WEBPORTAL_USER and AQUARIUS_WEBPORTAL_PW environment keys"
+                )
+            )
 
         payload = {
             "UserName": username,
