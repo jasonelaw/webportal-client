@@ -24,12 +24,17 @@ Both clients can be passed the username and password directly to the client cons
 ```python
 from dotenv import load_dotenv
 from webportal_client.client import WebPortalClient
+from webportal_client.format_polars import to_polars
 load_dotenv()
 
 client = WebPortalClient()
 # Or without environment variables: WebPortalClient("https://aquarius.portlandoregon.gov/api/v1", "my_username", "my_password")
 client.login_with_credentials_cookie()
 client.get_version()
+df = to_polars(client.get_locations())
+# Extended attributes for locations are pivoted by the to_polars function 
+# so you can filter (this particular query only works in the City of Portand WebPortal implementation)
+# df.filter(pl.col("manhole_hansen_id") == "ABQ942")
 ```
 
 ### Asynchronous Client

@@ -17,6 +17,14 @@ def to_polars(response):
 
     if "locations" in response:
         df = pl.DataFrame(response["locations"], strict=False)
+        ea = (
+            df.select(["id", "extendedAttributes"])
+            .rename({"id": "locationId"})
+            .explode("extendedAttributes")
+            .unnest("extendedAttributes")
+            .pivot(index="locationId", on="name", values="value")
+        )
+        df = df.drop("extendedAttributes").join(ea, left_on="id", right_on="locationId")
 
     if "datasets" in response:
         df = pl.DataFrame(response["datasets"], strict=False)
