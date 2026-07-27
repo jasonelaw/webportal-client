@@ -67,13 +67,17 @@ class WebPortalClient:
         Enables Basic Auth for all subsequent requests.
         Only works if username/password were provided at init.
         """
-        if not username:
-            username = os.environ["AQUARIUS_WEBPORTAL_USER"]
-        if not password:
-            password = os.environ["Aquarius_WEBPORTAL_PW"]
+
+        self.username = username or os.getenv("AQUARIUS_WEBPORTAL_USER")
+        self.password = password or os.getenv("AQUARIUS_WEBPORTAL_PW")
 
         if not self.username or not self.password:
-            raise ValueError("Basic auth requires username and password.")
+            raise ValueError(
+                (
+                    "WebPortal username and password must be provided "
+                    "or set as AQUARIUS_WEBPORTAL_USER and AQUARIUS_WEBPORTAL_PW environment keys"
+                )
+            )
         self.basic_auth = HTTPBasicAuth(self.username, self.password)
 
     def login_with_credentials_cookie(
@@ -90,11 +94,16 @@ class WebPortalClient:
         """
 
         url = self._build_url(f"/auth/{provider}")
+        username = username or os.getenv("AQUARIUS_WEBPORTAL_USER")
+        password = password or os.getenv("AQUARIUS_WEBPORTAL_PW")
 
-        if not username:
-            username = os.environ["AQUARIUS_WEBPORTAL_USER"]
-        if not password:
-            password = os.environ["Aquarius_WEBPORTAL_PW"]
+        if not username or not password:
+            raise ValueError(
+                (
+                    "WebPortal username and password must be provided "
+                    "or set as AQUARIUS_WEBPORTAL_USER and AQUARIUS_WEBPORTAL_PW environment keys"
+                )
+            )
 
         payload = {
             "UserName": username,

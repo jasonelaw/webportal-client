@@ -11,9 +11,29 @@ requires-python = ">=3.9"
 dependencies = [
     "requests>=2.26.0",
     "httpx>=0.23.0",
-    "sphinx>=7.4.7",
+]
+
+[project.optional-dependencies]
+polars = [
+    "polars>=1.36.1",
+]
+pandas = [
+    "pandas>=2.3.3",
 ]
 
 [build-system]
 requires = ["uv_build>=0.11.0,<0.12"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "sphinx>=7.4.7",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+testpaths = ["tests"]
+pythonpath = ["src"]
