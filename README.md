@@ -9,10 +9,12 @@ Using pyproject.toml:
     git clone https://github.com/jasonelaw/webportal-client.git
     pip install .
 
-If you want to convert the returned values as Polars or Pandas (not implemented yet) data frames, try:
+If you want to convert the returned values to Polars or Pandas (not implemented yet) data frames, try:
+
     pip install .[polars]
     pip install .[pandas]
 
+This will install Polars or Pandas if you don't already have them.
 
 ## Usage
 There are two clients in the package: a standard client that uses the `requests` package and an asynchronous client that uses the `httpx` package. I recommend using the standard client for most use cases. For downloading a very large amount of data for multiple 
