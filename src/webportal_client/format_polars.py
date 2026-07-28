@@ -34,8 +34,15 @@ def to_polars(response):
         df = pl.DataFrame(
             {k: response[k] for k in ts_keys if k in response}, strict=False
         )
-        df = df.unnest("dataset")
-        df = df.unnest("timeRange")
-        df = df.unnest("points")
+        df = df.unnest("dataset").unnest("timeRange").unnest("points")
+
+    geojson_keys = {"type", "features"}
+    if geojson_keys <= response.keys():
+        df = pl.DataFrame(response["features"])
+        df = df.unnest("properties")
+
+    if "latestStatisticValues" in response:
+        df = pl.DataFrame(response["latestStatisticValues"])
+        df = df.unnest("statistic", separator="_")
 
     return df
