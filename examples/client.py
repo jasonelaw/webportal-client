@@ -19,3 +19,6 @@ ts = client.get_export_data_set(
     data_set="Precip Increm.Primary@HYDRA-160", date_range="Years1"
 )
 print(to_polars(ts))
+
+ml = client.get_map_locations()
+print(to_polars(ml))
