@@ -28,10 +28,16 @@ class WebPortalClient:
         """
         Initialize the AQUARIUS API Client.
 
-        base_url: e.g., "https://aquarius.portlandoregon.gov/api/v1"
-        username/password: optional; used for Basic Auth if provided
-        timeout: request timeout in seconds
-        verify_ssl: SSL certificate verification
+        :param base_url: e.g., "https://aquarius.portlandoregon.gov/api/v1"
+        :type base_url: Optional[str]
+        :param username: used for Basic Auth if provided
+        :type username: Optional[str]
+        :param password: used for Basic Auth if provided
+        :type password: Optional[str]
+        :param timeout: request timeout in seconds
+        :type timeout: int
+        :param verify_ssl: SSL certificate verification
+        :type verify_ssl: bool
         """
         base_url = base_url or os.getenv("AQUARIUS_WEBPORTAL_URL")
         if not base_url:
@@ -70,7 +76,11 @@ class WebPortalClient:
     ) -> None:
         """
         Enables Basic Auth for all subsequent requests.
-        Only works if username/password were provided at init.
+
+        :param username: WebPortal username; if not provided, an attempt is made to retrieve via the AQUARIUS_WEBPORTAL_USER environment variable
+        :type username: Optional[str]
+        :param password: WebPortal password; if not provided, an attempt is made to retrieve via the AQUARIUS_WEBPORTAL_PW environment variable
+        :type password: Optional[str]
         """
 
         self.username = username or os.getenv("AQUARIUS_WEBPORTAL_USER")
@@ -96,6 +106,15 @@ class WebPortalClient:
         Logs in using WebPortal credentials and stores session cookies.
 
         Returns JSON response from the server.
+
+        :param username: WebPortal username; if not provided, an attempt is made to retrieve via the AQUARIUS_WEBPORTAL_USER environment variable
+        :type username: Optional[str]
+        :param password: WebPortal password; if not provided, an attempt is made to retrieve via the AQUARIUS_WEBPORTAL_PW environment variable
+        :type password: Optional[str]
+        :param provider: OAuth provider, defaults to ``credentials``
+        :type provider: str
+        :return: requests ``response.json()``
+        :rtype: Dict[str, Any]
         """
 
         url = self._build_url(f"/auth/{provider}")
@@ -125,6 +144,11 @@ class WebPortalClient:
     ) -> Dict[str, Any]:
         """
         DELETE /auth/{provider} — logs out a cookie-auth session.
+
+        :param provider: OAuth provider, defaults to ``credentials``
+        :type provider: str
+        :return: requests ``response.json()``
+        :rtype: Dict[str, Any]
         """
         url = self._build_url(f"/auth/{provider}")
         resp = self.session.delete(url, timeout=self.timeout)
@@ -816,6 +840,23 @@ class WebPortalClient:
     ) -> Dict[str, Any]:
         """
         GET /statistic-values/latest/{parameter}
+
+        :param parameter: Description
+        :type parameter: str
+        :param statistic: Description
+        :type statistic: Optional[List[str]]
+        :param location: Description
+        :type location: Optional[List[str]]
+        :param legend: Description
+        :type legend: Optional[List[str]]
+        :param use_gauge_legend: Description
+        :type use_gauge_legend: Optional[bool]
+        :param primary_or_first_only: Description
+        :type primary_or_first_only: Optional[bool]
+        :param use_one_platform_parameters: Description
+        :type use_one_platform_parameters: Optional[bool]
+        :return: Description
+        :rtype: Dict[str, Any]
         """
 
         self._require(parameter, "parameter")
