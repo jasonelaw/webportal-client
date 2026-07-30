@@ -1,6 +1,6 @@
 [project]
 name = "webportal-client"
-version = "0.3.4"
+version = "0.5.0"
 description = "Synchronous and asynchronous Python clients for the AQUARIUS WebPortal API."
 readme = "README.md"
 authors = [

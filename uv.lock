@@ -1578,7 +1578,7 @@ wheels = [
 
 [[package]]
 name = "webportal-client"
-version = "0.3.4"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
