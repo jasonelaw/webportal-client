@@ -22,3 +22,14 @@ print(to_polars(ts))
 
 ml = client.get_map_locations()
 print(to_polars(ml))
+
+ta = client.export_time_aligned(
+    date_range="Years1",
+    datasets=[
+        {"identifier": "Depth.Primary@BUR-27"},
+        {"identifier": "Water Velocity.Primary@BUR-27"},
+        {"identifier": "Flow.Primary@BUR-27"},
+        {"identifier": "Precip Increm.Primary@HYDRA-160"},
+    ],
+)
+print(to_polars(ta))
